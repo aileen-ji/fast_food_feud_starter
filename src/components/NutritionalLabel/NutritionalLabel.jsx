@@ -7,18 +7,21 @@ export function NutritionalLabel(props) {
     <div className="nutritional-label">
       <h3 className="title">Nutrition Facts</h3>
 
-      <h4 className="item-name">{`CHANGE_ME`}</h4>
-
-      <ul className="fact-list">{/* WRITE CODE HERE */}</ul>
+      <h4 className="item-name">{props.item.item_name}</h4>
+      <ul className="fact-list">{nutritionFacts.map((fact) => (<NutritionalLabelFact key={fact.id} label={fact.label} attribute={fact.attribute} item={props.item}/>))}</ul>
     </div>
   )
 }
 
 export function NutritionalLabelFact(props) {
+  let att = props.attribute
+  if(props.attribute == "fiber"){
+    att = "dietary_fiber" 
+  }
   return (
     <li className="nutrition-fact">
-      <span className="fact-label">{/* WRITE CODE HERE */}</span>{" "}
-      <span className="fact-value">{/* WRITE CODE HERE */}</span>
+      <span className="fact-label">{props.label}</span>{" "}
+      <span className="fact-value">{props.item[att]}</span>
     </li>
   )
 }
