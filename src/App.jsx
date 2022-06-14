@@ -12,6 +12,9 @@ import { useState } from "react"
 import "./components/NutritionalLabel/NutritionalLabel.jsx"
 import NutritionalLabel from "./components/NutritionalLabel/NutritionalLabel.jsx"
 import { CategoriesColumn } from "./components/CategoryColumn"
+import { RestaurantRow } from "./components/RestaurantRow"
+import { DataSource } from "./components/DataSource"
+import { MenuDisplay } from "./components/MenuDisplay"
 
 // don't move this!
 export const appInfo = {
@@ -53,53 +56,34 @@ export function App() {
     }
   }
 
+  const categoryHandler = (categoryData) =>{
+    setCategory(categoryData)
+  }
+
+  const restaurantHandler = (restaurantData) => {
+    setRestaurant(restaurantData)
+  }
+
+  const menuHandler = (menuData) => {
+    setMenu(menuData)
+  }
 
   let currentMenuItems = data.filter((item) => {return item.food_category === categoryName && item.restaurant === restaurantName});
   return (
     <main className="App">
-      {/* CATEGORIES COLUMN */}
-      <div className="CategoriesColumn col">
-        <div className="categories options">
-          <h2 className="title">Categories</h2>
-          {categories.map((category) =>(
-            <Chip key={category} label={category} onClick={()=>setCategory(category)} onClose={()=>setCategory(0)} isActive={categoryName === category ? true : false} />
-          ))}
-        </div>
-      </div>
+      <CategoriesColumn categories={categories} setCategory={setCategory} categoryName={categoryName} onClick={(categoryData)=>categoryHandler(categoryData)} onClose={()=>setCategory(0)}/>
 
-      {/* MAIN COLUMN */}
       <div className="container">
-        {/*Headers*/}
         <Header title={appInfo.title} tagline={appInfo.tagline} description={appInfo.description}/>
-        {/* RESTAURANTS ROW */}
-        <div className="RestaurantsRow">
-          <h2 className="title">Restaurants</h2>
-          <div className="restaurants options">{restaurants.map((restaurant) =>(
-            <Chip key={restaurant} label={restaurant} onClick={()=>setRestaurant(restaurant)} onClose={()=>setRestaurant(0)} isActive={restaurantName === restaurant ? true : false}/>
-          ))}</div>
-        </div>
 
-        {/* INSTRUCTIONS GO HERE */}
+        <RestaurantRow restaurants={restaurants} setRestaurant={setRestaurant} restaurantName={restaurantName} onClick={(restaurantData)=>restaurantHandler(restaurantData)} onClose={()=>setRestaurant(0)}/>
+
         <Instructions instructions={returnInstr()} /> 
 
-
-        {/* MENU DISPLAY */}
-        <div className="MenuDisplay display">
-          <div className="MenuItemButtons menu-items">
-            <h2 className="title">Menu Items</h2>
-            {currentMenuItems.map((items) => (
-              <Chip label={items.item_name} key={items.item_name + items.calories} onClick={()=>setMenu(items)} onClose={()=>setMenu(0)} isActive={menuName === items ? true : false}/>
-            ))}
-          </div>
-          {/* NUTRITION FACTS */}
-          <div className="NutritionFacts nutrition-facts">{
-            <NutritionalLabel item={menuName} />
-          }</div>
-        </div>
-
-        <div className="data-sources">
-          <p>{appInfo.dataSource}</p>
-        </div>
+        <MenuDisplay currentMenuItems={currentMenuItems} setMenu={setMenu} menuName={menuName} onClick={(menuData)=>menuHandler(menuData)} onClose={()=>setMenu(0)}/>
+        
+        <DataSource appInfo={appInfo.dataSource}/>
+        
       </div>
     </main>
   )

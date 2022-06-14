@@ -11,7 +11,7 @@ export function Chip({ label = "", isActive = false, onClick, onClose}) {
     buttonClassName = "chip"
   }
   return (
-    <button className={buttonClassName} onClick={isActive ? onClose: onClick}>
+    <button className={buttonClassName} onClick={isActive ? onClose: onClick} name={label}>
       <p className="label">{label}</p>
       <span className ="close" role="button">{`X`}</span>
     </button>
